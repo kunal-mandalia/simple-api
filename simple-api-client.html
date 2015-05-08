@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<!-- Form controls to specify API parameters, url, and show response -->
+
+API url: <input type='text' id='inputURL' value="simpleapi.php"><br><br>
+Parameters: <br><textarea type='text' id='inputParameters' style="width: 300px; height: 100px;">apiKey=6421C1AC76496D6EAF7C76D1F81F9&function=getCountCaseClosed&user=Kunal</textarea><br>
+<button type="button" onclick="apiCall(document.getElementById('inputURL').value, document.getElementById('inputParameters').value);">Make API call</button><br><br>
+
+Result: <br><textarea readonly type='text' id='result' style="width: 300px; height: 100px; background-color: #DEDEDE"></textarea><br>
+
+</body>
+
+
+<script type="text/javascript">
+
+var apiCallResult = "TBD";
+
+function apiCall(url, params){
+	var http = new XMLHttpRequest();
+	//var url = "simpleapi.php";
+	//var params = "function=hello&name=kvm&email=kvm@hotmail.com";
+	http.open("POST", url, true);
+	var outputJSON = '';
+	//Send the proper header information along with the request
+	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	http.onreadystatechange = function() {// when our XMLHttpRequest has made some progress...
+	    if(http.readyState == 4 && http.status == 200) { // given the status is OK
+	    	outputJSON = http.responseText;
+	    	outputJSON = JSON.parse(outputJSON); // turn serialised/JSON encoded string to JSON object
+	        apiCallResult = outputJSON;
+	        document.getElementById('result').value = JSON.stringify(apiCallResult); // output on screen
+	        // Take a look at the output in the console window
+	        console.log(apiCallResult);
+	        return outputJSON;
+	    }
+	}
+	http.send(params);
+}
+
+</script>
+
+</html>
